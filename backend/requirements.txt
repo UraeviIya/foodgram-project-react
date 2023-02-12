@@ -1,5 +1,5 @@
 asgiref==3.6.0
-Django==4.1.5
+Django==2.2.16
 django-filter
 djangorestframework==3.14.0
 drf-base64==2.0
