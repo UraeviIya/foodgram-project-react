@@ -11,21 +11,6 @@ from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from users.models import Subscribe, User
 
-""" class IngredientRecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = IngredientRecipe
-        fields = ('amount',)
-
-class ShoppingCartSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='recipe.id')
-    name = serializers.ReadOnlyField(source='recipe.name')
-    image = serializers.ReadOnlyField(source='recipe.image')
-    cooking_time = serializers.ReadOnlyField(source='recipe.cooking_time')
-
-    class Meta:
-        model = ShoppingCart
-        fields = ('id', 'name', 'image', 'cooking_time') """
-
 
 class IngredientSerializer(serializers.ModelSerializer):
     # ingredient_amount = serializers.IntegerField(source='amount')
@@ -305,12 +290,6 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'id', 'username', 'first_name', 'last_name',
                   'recipes', 'recipes_count', 'is_subscribed')
-
-
-""" class IngredientRecipeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = IngredientRecipe
-        fields = ('amount',) """
 
 
 class ShoppingCartSerializer(serializers.ModelSerializer):

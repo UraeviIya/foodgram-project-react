@@ -77,9 +77,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         verbose_name='Изображение',
-        upload_to='recipes/images',
-        # null=True
-        null=True
+        upload_to='recipes/images'
     )
     cooking_time = models.PositiveSmallIntegerField(
         default=1, editable=False,
@@ -118,16 +116,6 @@ class IngredientRecipe(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """Рецепты в корзине покупок.
-    Модель связывает Recipe и  User.
-    Attributes:
-        recipe(int):
-            Связаный рецепт. Связь через ForeignKey.
-        user(int):
-            Связаный пользователь. Связь через ForeignKey.
-        date_added(datetime):
-            Дата добавления рецепта в корзину.
-    """
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
         related_name='shoppingcarts',
