@@ -13,8 +13,6 @@ from users.models import Subscribe, User
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-    # ingredient_amount = serializers.IntegerField(source='amount')
-    # ingredient_amount = IngredientRecipeSerializer(source='amount')
 
     class Meta:
         model = Ingredient

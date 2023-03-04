@@ -130,11 +130,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def delete_from(self, model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
-        if obj.exists():
-            obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({'errors': 'Рецепт уже удален!'},
-                        status=status.HTTP_400_BAD_REQUEST)
+        if obj.delete():
+            return Response({'errors': 'Рецепт уже удален!'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
     @action(
         detail=False,

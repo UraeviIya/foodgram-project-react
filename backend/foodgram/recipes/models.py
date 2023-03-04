@@ -37,7 +37,6 @@ class Tag(models.Model):
     color = models.CharField(
         max_length=7,
         unique=True,
-        # validators=[color_validator]
         verbose_name='Цвет тэга',
         choices=COLOR_CHOICES,
     )
@@ -112,10 +111,11 @@ class IngredientRecipe(models.Model):
     )
 
     def __str__(self):
-        return f'{self.ingredient} {self.recipe} {self.amount}'
+        return f'{self.ingredient.name} {self.recipe.name} {self.amount}'
 
 
 class ShoppingCart(models.Model):
+    """Модель рецепта добавленного в корзину."""
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
         related_name='shoppingcarts',
@@ -145,7 +145,8 @@ class ShoppingCart(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f'{self.user} {self.recipe}'
+        """Метод строкового представления модели."""
+        return f'{self.recipe.name} {self.user.username}'
 
 
 class Favorite(models.Model):
@@ -178,4 +179,4 @@ class Favorite(models.Model):
         verbose_name_plural = 'Избранные рецепты'
 
     def __str__(self) -> str:
-        return f'{self.user} {self.recipe}'
+        return f'{self.recipe.name} {self.user.username}'
