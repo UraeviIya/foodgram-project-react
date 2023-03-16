@@ -45,7 +45,7 @@ jobs:
         with:
           context: api_yamdb
           push: true
-          tags: kermitthefrog1/yamdb_final:latest 
+          tags: kermitthefrog1/foodgram_backend :latest 
   
   deploy:
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          sudo docker pull kermitthefrog1/yamdb_final:latest
+          sudo docker pull kermitthefrog1/foodgram_backend :latest
           sudo docker-compose stop
           sudo docker-compose rm web
           touch .env
