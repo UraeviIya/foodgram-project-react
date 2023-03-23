@@ -6,6 +6,18 @@ services:
       - db_value:/var/lib/postgresql/data/
     env_file:
       - ./.env
+
+  backend:
+    image: kermitthefrog1/foodgram_backend:latest
+    restart: always
+    volumes:
+      - static_value:/app/static/
+      - media_value:/media/
+    depends_on:
+      - db
+    env_file:
+      - .env
+
   frontend:
     build:
       context: ../frontend
@@ -13,27 +25,16 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
 
-  backend:
-    image: kermitthefrog1/foodgram_backend:latest
-    restart: always
-    volumes:
-      - static_value:/app/static_backend/
-      - media_value:/media/
-    depends_on:
-      - db
-    env_file:
-      - .env
-
   nginx:
     image: nginx:1.21.3-alpine
-    restart: always
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
-      - static_value:/var/html/static_backend/
+      - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
       - backend
