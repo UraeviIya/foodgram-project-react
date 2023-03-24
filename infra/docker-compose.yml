@@ -11,8 +11,8 @@ services:
     image: kermitthefrog1/foodgram_backend:latest
     restart: always
     volumes:
-      - static_value:/app/static/
-      - media_value:/media/
+      - static_value:/code/backend_static/
+      - media_value:/code/backend_media/
     depends_on:
       - db
     env_file:
@@ -34,6 +34,7 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
+      - frontend
       - backend
 
 volumes:
