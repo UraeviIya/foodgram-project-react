@@ -37,7 +37,6 @@ services:
       - redoc:/usr/share/nginx/html/api/docs/
     depends_on:
       - backend
-    restart: always
 
 volumes:
   db_value:
