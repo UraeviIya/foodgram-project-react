@@ -132,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 if DEBUG:
-    STATICFILES_DIRS = ['app/static/admin']
+    STATICFILES_DIRS = ['static/admin/']
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
