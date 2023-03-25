@@ -63,7 +63,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          sudo docker pull kermitthefrog1/foodgram_backend :latest
+          sudo docker pull kermitthefrog1/foodgram_backend:latest
           sudo docker pull kermitthefrog1/foodgram_frontend:latest
           sudo docker-compose stop
           sudo docker-compose rm web
