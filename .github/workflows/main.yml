@@ -1,3 +1,4 @@
+"""
 name: foodgram-project-react workflow
 
 on:
@@ -79,3 +80,4 @@ jobs:
           sudo docker-compose exec -T backend python manage.py migrate
           sudo docker-compose exec -T backend python manage.py collectstatic --no-input
           sudo docker image prune -f
+"""
