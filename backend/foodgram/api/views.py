@@ -152,25 +152,25 @@ class ShoppingCartViewSet(CreateDestroyViewSet):
     def get_serializer_context(self):
         """
         Метод передает в сериализатор необходимые ему для создания модели
-        атрибуты cart_owner и recipe.
+        атрибуты user и recipe.
         """
         context = super().get_serializer_context()
         recipe = get_object_or_404(Recipe, pk=self.kwargs.get('recipe_id'))
         context.update({'recipe': recipe})
-        context.update({'cart_owner': self.request.user})
+        context.update({'user': self.request.user})
         return context
 
     @action(methods=('delete',), detail=True)
     def delete(self, request, recipe_id):
         recipe = self.kwargs.get('recipe_id')
-        cart_owner = self.request.user
+        user = self.request.user
         if not ShoppingCart.objects.filter(recipe=recipe,
-                                           cart_owner=cart_owner).exists():
+                                           user=user).exists():
             return Response({'errors': 'Рецепт не добавлен в список покупок'},
                             status=status.HTTP_400_BAD_REQUEST)
         get_object_or_404(
             ShoppingCart,
-            cart_owner=cart_owner,
+            user=user,
             recipe=recipe).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -179,11 +179,11 @@ class DownloadShoppingCart(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
-        if not ShoppingCart.objects.filter(cart_owner=request.user).exists():
+        if not ShoppingCart.objects.filter(user=request.user).exists():
             return Response({'errors': 'В вашем списке покупок ничего нет'},
                             status=status.HTTP_400_BAD_REQUEST)
         rec_pk = ShoppingCart.objects.filter(
-            cart_owner=request.user).values('recipe_id')
+            user=request.user).values('recipe_id')
         ingredients = IngredientRecipe.objects.filter(
             recipe_id__in=rec_pk).values(
                 'ingredient__name', 'ingredient__measurement_unit').annotate(

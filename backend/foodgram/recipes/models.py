@@ -125,6 +125,7 @@ class ShoppingCart(models.Model):
         to=Recipe,
         on_delete=models.CASCADE,
     )
+
     user = models.ForeignKey(
         verbose_name='Владелец списка',
         related_name='shopping_carts',

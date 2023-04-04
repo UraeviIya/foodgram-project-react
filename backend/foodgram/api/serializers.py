@@ -189,7 +189,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         return ShoppingCart.objects.filter(
-            recipe=obj, cart_owner=request.user).exists()
+            recipe=obj, user=request.user).exists()
 
     def get_ingredients(self, obj):
         queryset = IngredientRecipe.objects.filter(recipe=obj)
@@ -275,15 +275,15 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = ShoppingCart
-        fields = ('cart_owner', 'recipe')
-        read_only_fields = ('cart_owner', 'recipe')
+        fields = ('user', 'recipe')
+        read_only_fields = ('user', 'recipe')
 
     def validate(self, data):
-        cart_owner = self.context.get('request').user
+        user = self.context.get('request').user
         recipe = self.context.get('recipe')
         data['recipe'] = recipe
-        data['cart_owner'] = cart_owner
-        if ShoppingCart.objects.filter(cart_owner=cart_owner,
+        data['user'] = user
+        if ShoppingCart.objects.filter(user=user,
                                        recipe=recipe).exists():
             raise serializers.ValidationError({
                 'errors': 'Рецепт уже в списке покупок'})
