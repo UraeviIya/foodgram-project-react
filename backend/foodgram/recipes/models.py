@@ -63,10 +63,10 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipes',
+        related_name='recipe',
         verbose_name='Автор рецепта'
     )
-    tag = models.ManyToManyField(
+    tags = models.ManyToManyField(
         Tag,
         verbose_name='Тег блюда',
         related_name='recipes',
@@ -89,9 +89,13 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        ordering = ['-pub_date', ]
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-pub_date']
+        constraints = [
+            models.UniqueConstraint(fields=['author', 'name'],
+                                    name='unique_author_recipename')
+        ]
 
     def __str__(self):
         return self.name
@@ -100,10 +104,12 @@ class Recipe(models.Model):
 class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
+        related_name='ingredients',
         on_delete=models.CASCADE
     )
     recipe = models.ForeignKey(
         Recipe,
+        related_name='ingredients',
         on_delete=models.CASCADE
         )
     amount = models.IntegerField(
@@ -118,13 +124,13 @@ class ShoppingCart(models.Model):
     """Модель рецепта добавленного в корзину."""
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
-        related_name='shoppingcarts',
+        related_name='shopping_carts',
         to=Recipe,
         on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
         verbose_name='Владелец списка',
-        related_name='shoppingcarts',
+        related_name='shopping_carts',
         to=User,
         on_delete=models.CASCADE,
     )
@@ -152,13 +158,13 @@ class ShoppingCart(models.Model):
 class Favorite(models.Model):
     recipe = models.ForeignKey(
         verbose_name='Избранный рецепт',
-        related_name='favorites',
+        related_name='favorite',
         to=Recipe,
         on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
         verbose_name='Пользователь',
-        related_name='favorites',
+        related_name='favorite',
         to=User,
         on_delete=models.CASCADE,
     )
