@@ -15,3 +15,5 @@ python-dotenv==0.20.0
 djoser==2.1.0
 flake8
 importlib-metadata==1.6.0
+requests==2.28.2
+drf-extra-fields==3.4.0

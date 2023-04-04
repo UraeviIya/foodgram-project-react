@@ -133,3 +133,7 @@ dmypy.json
 migrations/
 media/
 dump.json
+
+# local dirs in infra
+docker-compose-local.yml
+nginx_local.conf

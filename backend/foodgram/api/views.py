@@ -75,7 +75,7 @@ class SubscriptionsViewSet(viewsets.ModelViewSet):
             user=self.request.user).prefetch_related('author')
 
 
-class SubscribeAPIView(APIView):
+class SubscribeView(APIView):
     """
     Класс для создания и удаления подписок
     """

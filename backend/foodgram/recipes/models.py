@@ -71,9 +71,6 @@ class Recipe(models.Model):
         verbose_name='Тег блюда',
         related_name='recipes',
     )
-    ingredients = models.ManyToManyField(
-        Ingredient, through='IngredientRecipe'
-    )
     image = models.ImageField(
         verbose_name='Изображение',
         upload_to='recipes/images'
@@ -104,7 +101,7 @@ class Recipe(models.Model):
 class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
-        related_name='ingredients',
+        related_name='+',
         on_delete=models.CASCADE
     )
     recipe = models.ForeignKey(
@@ -124,7 +121,7 @@ class ShoppingCart(models.Model):
     """Модель рецепта добавленного в корзину."""
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
-        related_name='shopping_carts',
+        related_name='+',
         to=Recipe,
         on_delete=models.CASCADE,
     )
@@ -158,7 +155,7 @@ class ShoppingCart(models.Model):
 class Favorite(models.Model):
     recipe = models.ForeignKey(
         verbose_name='Избранный рецепт',
-        related_name='favorite',
+        related_name='+',
         to=Recipe,
         on_delete=models.CASCADE,
     )
