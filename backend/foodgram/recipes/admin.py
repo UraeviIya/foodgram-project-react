@@ -87,5 +87,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'user',
         'date_added',
     )
+    list_filter = ('user',)
     # list_filter = ('recipe', 'user', 'date_added',)
     empty_value_display = '-пусто-'
