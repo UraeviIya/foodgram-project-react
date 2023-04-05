@@ -21,12 +21,7 @@ from .serializers import (FavoriteRecipeSerializer, IngredientSerializer,
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    """
-    Вьюсет для просмотра списка или одного рецепта (доступно всем),
-    создания (доступно авторизованным),
-    изменения или удаления автором его рецепта.
-    Доступна фильтрация по избранному, автору, списку покупок и тегам.
-    """
+    """Вьюсет для просмотра списка рецептов."""
     queryset = Recipe.objects.all()
     pagination_class = PageLimitPagination
     filter_backends = (DjangoFilterBackend,)
@@ -36,23 +31,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    Для тэгов нужны только list() и retrieve() методы.
-    Доступен для чтения всем, изменять можно только через админку.
-    """
+    """Вьюсет для тегов."""
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    По аналогии с тэгами ингридиенты можно только читать
-    (получить весь list или каждый по id).
-    Добавление в список ингридиентов доступно только через админку.
-    QUERY PARAMETERS: name.
-    Поиск по частичному вхождению в начале названия ингредиента.
-    """
+    """Вьюсет для ингредиентов."""
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
@@ -61,11 +47,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class SubscriptionsViewSet(viewsets.ModelViewSet):
-    """
-    Вьюесет позволяет посмотреть список подписок.
-    Переопределяем queryset так как в сериализаторе используем
-    dotted notation и лучше prefetch_related объекты author.
-    """
+    """Вюсет подписок."""
     serializer_class = SubscribeSerializer
     permission_classes = [IsAuthenticated, ]
     pagination_class = PageLimitPagination
@@ -76,9 +58,7 @@ class SubscriptionsViewSet(viewsets.ModelViewSet):
 
 
 class SubscribeView(APIView):
-    """
-    Класс для создания и удаления подписок
-    """
+    """Вьюсет для создания и удаления подписок."""
     permission_classes = [IsAuthenticated, ]
 
     def post(self, request, author_id):
@@ -112,6 +92,7 @@ class SubscribeView(APIView):
 
 
 class FavoriteViewSet(viewsets.ModelViewSet):
+    """Вьюсет избранных рецептов."""
     queryset = Favorite.objects.all()
     serializer_class = FavoriteRecipeSerializer
     permission_classes = [IsAuthenticated, ]
@@ -142,18 +123,12 @@ class FavoriteViewSet(viewsets.ModelViewSet):
 
 
 class ShoppingCartViewSet(CreateDestroyViewSet):
-    """
-    Вьюсет позволяет добавлять и удалять рецепты из корзины покупок
-    """
+    """Вьюсет для добваления и удаления рецептов из корзины покупок."""
     queryset = ShoppingCart.objects.all()
     serializer_class = ShoppingCartSerializer
     permission_classes = [IsAuthenticated, ]
 
     def get_serializer_context(self):
-        """
-        Метод передает в сериализатор необходимые ему для создания модели
-        атрибуты user и recipe.
-        """
         context = super().get_serializer_context()
         recipe = get_object_or_404(Recipe, pk=self.kwargs.get('recipe_id'))
         context.update({'recipe': recipe})

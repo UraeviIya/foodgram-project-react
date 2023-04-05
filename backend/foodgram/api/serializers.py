@@ -12,8 +12,7 @@ from .validators import (validate_cooking_time, validate_ingredients,
 
 class RecipeToRepresentationSerializer(serializers.ModelSerializer):
     """
-    Укороченный сериализатор для отображения модели Recipe
-    в некоторых эндпоинтах.
+    Вспомогательный сериализатор рецептов
     """
     class Meta:
         model = Recipe
@@ -32,7 +31,6 @@ class TagSerializer(serializers.ModelSerializer):
 class FavoriteRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор для работы с моделью Favorite.
-    Используется для добавления и удаления рецептов из списка избранного.
     """
     id = serializers.ReadOnlyField(source='recipe.id')
     name = serializers.ReadOnlyField(source='recipe.name')
@@ -56,7 +54,6 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
 class IngredientSerializer(serializers.ModelSerializer):
     """
     Сериализатор для работы с моделью Ingredient.
-    Используется для просмотра списка или конкретного ингредиента.
     """
     class Meta:
         model = Ingredient
@@ -66,8 +63,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """
     Сериализатор для работы с моделью User.
-    Используется в качестве вложенного сериализатора
-    при отображении рецептов в сериадизаторе RecipeSerializer.
     """
     is_subscribed = serializers.SerializerMethodField()
 
@@ -78,11 +73,6 @@ class UserSerializer(serializers.ModelSerializer):
                   'last_name', 'is_subscribed')
 
     def get_is_subscribed(self, obj):
-        """
-        Метод возвращает False, если юзер не подписан на пользователя
-        или если запрос сделан неавторизованным юзером, True - если
-        объект подписки существует.
-        """
         user = self.context['request'].user
         if user.is_anonymous:
             return False
@@ -92,8 +82,6 @@ class UserSerializer(serializers.ModelSerializer):
 class SubscribeSerializer(serializers.ModelSerializer):
     """
     Сериализатор для работы с моделью Subscribe.
-    В результатах выводится личная информация об авторах,
-    перечень созданных ими рецептов и количество рецептов.
     """
     email = serializers.ReadOnlyField(source='author.email')
     id = serializers.ReadOnlyField(source='author.id')
@@ -112,17 +100,9 @@ class SubscribeSerializer(serializers.ModelSerializer):
                   'recipes', 'recipes_count')
 
     def get_is_subscrubed(self, obj):
-        """
-        Метод всегда возвращает True, так как используется для просмотра
-        уже существующих подписок пользователя
-        """
         return True
 
     def get_recipes(self, obj):
-        """
-        QUERY PARAMETERS: recipes_limit - параметр показывает сколько
-        рецептов каждого пользователя нужно показать в ответе.
-        """
         request = self.context.get('request')
         recipes = obj.author.recipe.all()
         recipes_limit = request.query_params.get('recipes_limit')
@@ -141,7 +121,6 @@ class SubscribeSerializer(serializers.ModelSerializer):
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор для работы с моделью IngredientInRecipe.
-    Используется для отображения ингредиентов в RecipeSerializer.
     """
     id = serializers.ReadOnlyField(
         source='ingredient.id',
@@ -196,10 +175,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         return IngredientInRecipeSerializer(queryset, many=True).data
 
     def validate(self, data):
-        """
-        Метод проверяет наличие и корректность тэгов,
-        ингредиентов, времени приготовления.
-        """
         tags = self.initial_data.get('tags')
         ingredients = self.initial_data.get('ingredients')
         cooking_time = data.get('cooking_time')
@@ -270,8 +245,6 @@ class RecipeSerializer(serializers.ModelSerializer):
 class ShoppingCartSerializer(serializers.ModelSerializer):
     """
     Сериалайзер для добавления и удаления рецепта из списка покупок.
-    Переопределен метод to_representation , чтобы сериализатор
-    отдавал информацию о объекте модели Recipe.
     """
     class Meta:
         model = ShoppingCart
@@ -290,10 +263,6 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         return data
 
     def to_representation(self, instance):
-        """
-        Метод принимает на вход объект сериализации
-        и возвращает словарь с данными для отображения.
-        """
         requset = self.context.get('request')
         return RecipeToRepresentationSerializer(
             instance.recipe,

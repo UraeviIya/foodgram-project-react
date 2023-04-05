@@ -118,7 +118,7 @@ class IngredientRecipe(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """Модель рецепта добавленного в корзину."""
+    """Модель рецепта добавленного в список покупок."""
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
         related_name='+',
@@ -149,11 +149,11 @@ class ShoppingCart(models.Model):
         ]
 
     def __str__(self) -> str:
-        """Метод строкового представления модели."""
         return f'{self.recipe.name} {self.user.username}'
 
 
 class Favorite(models.Model):
+    """Модель избранных рецептов."""
     recipe = models.ForeignKey(
         verbose_name='Избранный рецепт',
         related_name='+',
