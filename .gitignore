@@ -132,6 +132,7 @@ dmypy.json
 .idea
 migrations/
 media/
+media/recipes/
 dump.json
 
 # local dirs in infra
