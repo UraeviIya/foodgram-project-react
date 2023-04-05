@@ -20,7 +20,7 @@ class RecipeFilter(FilterSet):
 
     def filter_is_favorited(self, queryset, name, value):
         reс_pk = Favorite.objects.filter(
-            recipe_lover=self.request.user).values('recipe_id')
+            recipe_fev=self.request.user).values('recipe_id')
         if value:
             return queryset.filter(pk__in=reс_pk)
         return queryset

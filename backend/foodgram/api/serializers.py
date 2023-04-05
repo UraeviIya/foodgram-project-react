@@ -45,7 +45,7 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
     def validate(self, data):
         user = self.context.get('request').user
         recipe = self.context.get('recipe')
-        if Favorite.objects.filter(recipe_lover=user, recipe=recipe).exists():
+        if Favorite.objects.filter(recipe_fev=user, recipe=recipe).exists():
             raise serializers.ValidationError({
                 'errors': 'Рецепт уже в избранном'})
         return data
@@ -161,7 +161,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         return Favorite.objects.filter(
-            recipe=obj, recipe_lover=request.user).exists()
+            recipe=obj, recipe_fev=request.user).exists()
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')

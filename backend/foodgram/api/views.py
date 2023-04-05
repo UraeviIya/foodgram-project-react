@@ -105,19 +105,19 @@ class FavoriteViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         recipe = get_object_or_404(Recipe, pk=self.kwargs.get('recipe_id'))
         serializer.save(
-            recipe_lover=self.request.user, recipe=recipe)
+            recipe_fev=self.request.user, recipe=recipe)
 
     @action(methods=('delete',), detail=True)
     def delete(self, request, recipe_id):
         recipe = self.kwargs.get('recipe_id')
-        recipe_lover = self.request.user
+        recipe_fev = self.request.user
         if not Favorite.objects.filter(recipe=recipe,
-                                       recipe_lover=recipe_lover).exists():
+                                       recipe_fev=recipe_fev).exists():
             return Response({'errors': 'Рецепт не в избранном'},
                             status=status.HTTP_400_BAD_REQUEST)
         get_object_or_404(
             Favorite,
-            recipe_lover=recipe_lover,
+            recipe_fev=recipe_fev,
             recipe=recipe).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
