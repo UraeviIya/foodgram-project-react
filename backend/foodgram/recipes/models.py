@@ -1,4 +1,4 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core import validators
 from django.db import models
 from users.models import User
 
@@ -76,13 +76,13 @@ class Recipe(models.Model):
         upload_to='recipes/images'
     )
     cooking_time = models.PositiveSmallIntegerField(
-        default=1, blank=False,
-        verbose_name='Время приготовления',
-        validators=[
-            MinValueValidator(1, 'Должно быть больше 0'),
-            MaxValueValidator(600, 'Что-то долго готовите')])
+        validators=(
+            validators.MinValueValidator(
+                1, message='Минимальное время приготовления 1 минута'),),
+        verbose_name='Время приготовления'
+    )
     pub_date = models.DateTimeField(
-        'Дата публикации',
+        verbose_name='Дата публикации',
         auto_now_add=True,
         db_index=True
     )
@@ -111,8 +111,11 @@ class IngredientRecipe(models.Model):
         related_name='ingredients',
         on_delete=models.CASCADE
         )
-    amount = models.IntegerField(
-        validators=[MinValueValidator(1)]
+    amount = models.PositiveSmallIntegerField(
+        validators=(
+            validators.MinValueValidator(
+                1, message='Минимальное количество ингридиентов 1'),),
+        verbose_name='Количество',
     )
 
     def __str__(self):
@@ -120,7 +123,7 @@ class IngredientRecipe(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """Модель рецепта добавленного в список покупок."""
+    """Модель рецепта добавленного в корзину."""
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
         related_name='+',
@@ -151,11 +154,11 @@ class ShoppingCart(models.Model):
         ]
 
     def __str__(self) -> str:
+        """Метод строкового представления модели."""
         return f'{self.recipe.name} {self.user.username}'
 
 
 class Favorite(models.Model):
-    """Модель избранных рецептов."""
     recipe = models.ForeignKey(
         verbose_name='Избранный рецепт',
         related_name='+',

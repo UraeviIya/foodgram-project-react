@@ -6,7 +6,7 @@ from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
 from users.models import Subscribe, User
 
-from .validators import (validate_ingredients,
+from .validators import (validate_cooking_time, validate_ingredients,
                          validate_tags)
 
 
@@ -177,6 +177,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     def validate(self, data):
         tags = self.initial_data.get('tags')
         ingredients = self.initial_data.get('ingredients')
+        cooking_time = data.get('cooking_time')
 
         if not tags:
             raise serializers.ValidationError({
@@ -186,6 +187,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 'ingredients': 'Кажется вы забыли указать ингредиенты'})
         validate_tags(tags, Tag)
         validate_ingredients(ingredients, Ingredient)
+        validate_cooking_time(cooking_time)
         data.update({
             'tags': tags,
             'ingredients': ingredients,
