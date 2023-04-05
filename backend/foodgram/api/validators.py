@@ -4,13 +4,6 @@ from django.core.exceptions import ValidationError
 
 
 def validate_ingredients(ingredients_list, val_model):
-    """
-    Метод проверяет существуют ли указанные ингредиенты
-    и правильно ли задано их количество.
-    Если нет - выбрасывает ValidationError.
-    Вместе с ingredients_list передаем модель Ingredient,
-    чтобы избежать circular import.
-    """
     if len(ingredients_list) < 1:
         raise ValidationError(
             'Блюдо должно содержать хотя бы 1 ингредиент')
@@ -33,35 +26,18 @@ def validate_ingredients(ingredients_list, val_model):
 
 
 def validate_tags(tags_list, val_model):
-    """
-    Метод проверяет существует ли указанный тег.
-    Если нет - выбрасывает ValidationError.
-    Вместе с tags_list передаем модель Tag,
-    чтобы избежать circular import.
-    """
     for tag in tags_list:
         if not val_model.objects.filter(pk=tag).exists():
             raise ValidationError(f'{tag} - Такого тэга не существует')
 
 
 def validate_cooking_time(value):
-    """
-    Метод проверяет корректно ли указанное времени приготовления.
-    Если нет - выбрасывает ValidationError.
-    """
     if not value or int(value) < 1:
         raise ValidationError({
             'cooking_time': 'Укажите время приготовления'})
 
 
 def validate_ingredient_name(value):
-    """
-    Метод проверяет соответствует ли название ингредиента
-    заданному регулярному выражению.
-    Название может содержать %,-"«»&() и
-    русские и английские буквы.
-    Если нет - выбрасывает ValidationError.
-    """
     reg = r'^[\w%,"\'«»&()]+\Z'
     listik = value.split()
     for item in listik:
@@ -71,11 +47,6 @@ def validate_ingredient_name(value):
 
 
 def validate_hex(value):
-    """
-    Метод проверяет соответствует ли код цвета
-    возможному
-    Если нет - выбрасывает ValidationError.
-    """
     regex = "^#([A-Fa-f0-9]{3,6})$"
     hehex = re.compile(regex)
     if not re.search(hehex, value):
