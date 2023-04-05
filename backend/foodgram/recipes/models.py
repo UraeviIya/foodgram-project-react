@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from users.models import User
 
@@ -76,9 +76,11 @@ class Recipe(models.Model):
         upload_to='recipes/images'
     )
     cooking_time = models.PositiveSmallIntegerField(
-        default=1, editable=False,
+        default=1, blank=False,
         verbose_name='Время приготовления',
-        validators=(MinValueValidator(1),))
+        validators=[
+            MinValueValidator(1, 'Должно быть больше 0'),
+            MaxValueValidator(600, 'Что-то долго готовите')])
     pub_date = models.DateTimeField(
         'Дата публикации',
         auto_now_add=True,

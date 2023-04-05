@@ -20,7 +20,6 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = (
         'name',
         'author',
-        # 'tags__slug',
     )
     ordering = ('name',)
     empty_value_display = '-пусто-'
@@ -70,7 +69,6 @@ class IngredientRecipeAdmin(admin.ModelAdmin):
         'recipe',
         'ingredient',
     )
-    # list_filter = ('recipe', 'ingredient', )
     empty_value_display = '-пусто-'
 
 
@@ -88,5 +86,4 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'date_added',
     )
     list_filter = ('user',)
-    # list_filter = ('recipe', 'user', 'date_added',)
     empty_value_display = '-пусто-'
