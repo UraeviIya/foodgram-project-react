@@ -44,11 +44,3 @@ def validate_ingredient_name(value):
         if not re.fullmatch(reg, item):
             raise ValidationError({
                 'Недопустимое значение имени {item}'})
-
-
-def validate_hex(value):
-    regex = "^#([A-Fa-f0-9]{3,6})$"
-    hehex = re.compile(regex)
-    if not re.search(hehex, value):
-        raise ValidationError({
-            'Недопустимое значение цвета'})

@@ -70,7 +70,7 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
         'HOST': os.getenv('DB_HOST', default='db'),
-        'PORT': os.getenv('DB_PORT', default=5432)
+        'PORT': os.getenv('DB_PORT', default=5432),
     }
 }
 """
@@ -137,5 +137,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# DATAFILES_DIRS = (os.path.join(BASE_DIR, 'media/'),)
+DATAFILES_DIRS = (os.path.join(BASE_DIR, 'media/'),)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
