@@ -1,57 +1,63 @@
+[![foodgram-project-react workflow](https://github.com/UraeviIya/foodgram-project-react/actions/workflows/main.yml/badge.svg)](https://github.com/UraeviIya/foodgram-project-react/actions/workflows/main.yml)
+
 ### Описание проекта: foodgram_project_react
 
-Проект foodgram_project_react предсталяет собой пользовательский сервис. Это место во всемирной сети, где люди могут поделится
-своими рецептами и мастерством приготавления **Вкуснейших блюд** разных народов нашей необъятной и по истине уникальной планеты.
-Здесь, Вы можите найти рецептуру приготовление таких блюд как: Овощное попурри одно из национальных блюд Индонезии, 
-Лап-лап Lap-lap многими любимое блюда коренных жителей республики Вануату или простейшие на первый взгляд но очень вкусные
-лепешки Парата (Роти Парата) народа Индии. 
+Проект foodgram_project_react предсталяет собой пользовательский сервис. Пользователи могут поделиться
+своими рецептами и мастерством приготавления **Вкуснейших блюд**, так же можно подписаться на автора рецепта, добавлять рецепты в «Избранное», скачать список нужных продуктов для приготовления. 
 
 Проект был подготовлен на основе **Redoc** API документации. 
-  Подробнее про **Redoc** – https://redocly.com/redoc/
- 
+Подробнее про **Redoc** – https://redocly.com/redoc/
 
-Авторизация в проекте настроена через получения на почту `confirmation_code`, после получения которого можно получить **JWT**-токен для дальнейшей работы в системе.
-  Подробнее про **JWT** – https://jwt.io/introduction
- 
-В системе есть разделение ролей: администратор, модератор и пользователь.
+##На данный момент сайт находится в открытом доступе по адресам:
+http://pss.hopto.org
+http://158.160.25.20/admin/
+Логин администратора: admin@admin.com
+Пороль: qwerty_1
 
-### Как запустить проект:
+### Запуск проекта через Docker:
 
-Cоздать и активировать виртуальное окружение:
+Устанавливаем Docker, используя инструкции с официального сайта:
+- для [Linux](https://docs.docker.com/engine/install/ubuntu/). Отдельно потребуется установть [Docker Compose](https://docs.docker.com/compose/install/)
+- для [Windows и MacOS](https://www.docker.com/products/docker-desktop)
 
+Клонируйте репозиторий
 ```
-python3 -m venv env
-```
-
-```
-source env/bin/activate
-```
-
-```
-python3 -m pip install --upgrade pip
+https://github.com/UraeviIya/foodgram-project-react.git
 ```
 
-Установить зависимости из файла requirements.txt:
-
+В директории infra создать файл .env и заполните его:
 ```
-pip install -r requirements.txt
-```
-
-Выполнить миграции:
-
-```
-python3 manage.py migrate
-```
-
-Запустить проект:
-
-```
-python3 manage.py runserver
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY='SECRET_KEY'
 ```
 
-Просмотр API документации: 
-
+- #Там же, в директории infra запустим сборку контейнеров коммандой
 ```
-http://127.0.0.1:8000/redoc/
+docker compose up -d --build
 ```
 
+- #Выполняем миграции
+```
+docker compose exec backend python manage.py migrate
+```
+
+- #Собираем статику
+```
+docker compose exec backend python manage.py collectstatic --no-input
+```
+
+- #Импортируем ингредиенты
+```
+docker-compose exec backend python manage.py import_ingredients
+```
+
+Теперь приложение будет доступно в браузере по адресу 127.0.0.1/admin
+
+## Authors
+
+- [@uraevilya](https://github.com/UraeviIya)
