@@ -22,7 +22,7 @@ class RecipeAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('favorite',)
     search_fields = (
-        'shopping_carts__name',
+        'shopping_carts__user',
         'shopping_carts__author',
         'recipe__tags',
     )
