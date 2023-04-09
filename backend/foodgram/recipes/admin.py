@@ -22,9 +22,9 @@ class RecipeAdmin(admin.ModelAdmin):
     )
     readonly_fields = ('favorite',)
     search_fields = (
-        'name',
-        'author',
-        'tags',
+        'shopping_carts__name',
+        'shopping_carts__author',
+        'recipe__tags',
     )
     list_filter = (
         'name',
