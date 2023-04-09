@@ -28,6 +28,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
     serializer_class = RecipeSerializer
     permission_classes = [IsAuthorOrReadOnly]
+    search_fields = ('name',)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
