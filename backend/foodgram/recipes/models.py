@@ -104,7 +104,7 @@ class IngredientRecipe(models.Model):
         Recipe,
         related_name='ingredients',
         on_delete=models.CASCADE
-        )
+    )
     amount = models.PositiveSmallIntegerField(
         validators=(
             validators.MinValueValidator(
@@ -120,7 +120,7 @@ class ShoppingCart(models.Model):
     """Модель рецепта добавленного в корзину."""
     recipe = models.ForeignKey(
         verbose_name='Рецепты в списке покупок',
-        related_name='+',
+        related_name='shopping_carts',
         to=Recipe,
         on_delete=models.CASCADE,
     )
@@ -138,14 +138,14 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Рецепт в списке покупок'
-        verbose_name_plural = 'Рецепты в списке покупок'
-        constraints = [
+        verbose_name = 'Рецепт в корзине'
+        verbose_name_plural = 'Рецепты в корзине'
+        constraints = (
             models.UniqueConstraint(
-                fields=['recipe', 'user'],
-                name='unique_recipe_shopping_cart'
-            )
-        ]
+                fields=('recipe', 'user'),
+                name='unique_recipe_shopping cart'
+            ),
+        )
 
     def __str__(self) -> str:
         """Метод строкового представления модели."""
@@ -156,12 +156,23 @@ class Favorite(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE,
         verbose_name='Рецепт',
-        related_name='+')
+        related_name='favorite'
+    )
     recipe_fev = models.ForeignKey(
         User, on_delete=models.CASCADE,
         verbose_name='Добавил в избранное',
-        related_name='favorite')
+        related_name='favorite'
+    )
 
     class Meta:
-        verbose_name = 'Любимый рецепт'
-        verbose_name_plural = 'Любимые рецепты'
+        verbose_name = 'Избранный рецепт'
+        verbose_name_plural = 'Избранные рецепты'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('recipe', 'recipe_fev'),
+                name='unique_favorite'
+            ),
+        )
+
+    def __str__(self):
+        return f'{self.recipe.name} в избранном у {self.recipe_fev.username}'

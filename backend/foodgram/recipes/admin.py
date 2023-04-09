@@ -1,17 +1,26 @@
 from django.contrib import admin
 
-from .models import Ingredient, IngredientRecipe, Recipe, ShoppingCart, Tag
+from .models import (Ingredient, IngredientRecipe, Recipe, ShoppingCart,
+                     Tag, Favorite)
+
+
+class IngredientRecipeInline(admin.TabularInline):
+    model = IngredientRecipe
+    extra = 0
 
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    """ Панель управление рецептами """
+    """Панель управление рецептами"""
     list_display = (
         'id',
         'name',
         'text',
         'author',
+        'favorite',
+        'pub_date'
     )
+    readonly_fields = ('favorite',)
     search_fields = (
         'name',
         'author',
@@ -21,13 +30,18 @@ class RecipeAdmin(admin.ModelAdmin):
         'name',
         'author',
     )
+    inlines = (IngredientRecipeInline,)
     ordering = ('name',)
     empty_value_display = '-пусто-'
+
+    def favorite(self, obj):
+        return obj.favorite.all().count()
+    favorite.short_description = 'Раз в избранном'
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    """ Панель управление тегами """
+    """Панель управление тегами """
     list_display = (
         'name',
         'color',
@@ -44,7 +58,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
-    """ Панель управление ингредиентами"""
+    """Панель управление ингредиентами"""
     list_display = (
         'name',
         'measurement_unit',
@@ -59,7 +73,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(IngredientRecipe)
 class IngredientRecipeAdmin(admin.ModelAdmin):
-    """ Панель управления ингредиентами в рецептах"""
+    """Панель управления ингредиентами в рецептах"""
     list_display = (
         'recipe',
         'ingredient',
@@ -74,7 +88,7 @@ class IngredientRecipeAdmin(admin.ModelAdmin):
 
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
-    """ Панель управления корзиной с рецептами"""
+    """Панель управления корзиной с рецептами"""
     list_display = (
         'recipe',
         'user',
@@ -87,3 +101,12 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     )
     list_filter = ('user',)
     empty_value_display = '-пусто-'
+
+
+@admin.register(Favorite)
+class Favorite(admin.ModelAdmin):
+    list_display = (
+        'recipe',
+        'recipe_fev',
+    )
+    list_filter = ('recipe_fev',)
