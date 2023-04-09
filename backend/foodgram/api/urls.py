@@ -16,13 +16,13 @@ router.register(
 router.register('tags', views.TagViewSet, basename='tags')
 router.register('ingredients', views.IngredientViewSet, basename='ingredients')
 router.register(
-    r'recipes/(?P<recipe_id>\d+)/shopping_cart',
-    views.ShoppingCartViewSet, basename='shopping_cart')
+    r'recipes/(?P<recipe_id>\d+)/shopping_carts',
+    views.ShoppingCartViewSet, basename='shopping_carts')
 
 
 urlpatterns = [
     path(
-        'recipes/download_shopping_cart/',
+        'recipes/download_shopping_carts/',
         views.DownloadShoppingCart.as_view()),
     path('', include(router.urls)),
     path('', include('djoser.urls')),
