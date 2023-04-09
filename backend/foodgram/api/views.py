@@ -11,7 +11,7 @@ from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
 from users.models import Subscribe, User
 
-from .filters import IngredientSearchFilter, RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .mixins import CreateDestroyViewSet
 from .paginators import PageLimitPagination
 from .permissions import IsAuthorOrReadOnly
@@ -42,7 +42,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (IngredientSearchFilter,)
+    filter_backends = (IngredientFilter,)
     search_fields = ('^name',)
 
 
