@@ -21,11 +21,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'pub_date'
     )
     readonly_fields = ('favorite',)
-    search_fields = (
-        'name',
-        'author',
-        'tags',
-    )
+    search_fields = ('name', 'author__username', 'tags__name')
     list_filter = (
         'name',
         'author',
