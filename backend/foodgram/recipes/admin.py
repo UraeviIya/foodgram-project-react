@@ -91,8 +91,8 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'date_added',
     )
     search_fields = (
-        'recipe',
-        'user',
+        'recipe__name',
+        'user__username',
         'date_added',
     )
     list_filter = ('user',)
