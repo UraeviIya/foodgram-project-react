@@ -86,7 +86,7 @@ class IngredientRecipeAdmin(admin.ModelAdmin):
 class ShoppingCartAdmin(admin.ModelAdmin):
     """Панель управления корзиной с рецептами"""
     list_display = (
-        'recipe',
+        'recipe__ingredients',
         'user',
         'date_added',
     )
