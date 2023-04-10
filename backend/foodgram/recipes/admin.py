@@ -76,8 +76,8 @@ class IngredientRecipeAdmin(admin.ModelAdmin):
         'amount',
     )
     search_fields = (
-        'recipe',
-        'ingredient',
+        'recipe__name',
+        'ingredient__name',
     )
     empty_value_display = '-пусто-'
 
