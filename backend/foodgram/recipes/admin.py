@@ -89,7 +89,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'recipe',
         'user',
         'date_added',
-        'ingredient',
     )
     search_fields = (
         'recipe__name',
