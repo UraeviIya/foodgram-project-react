@@ -95,6 +95,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
         'user__username',
         'date_added',
     )
+    inlines = (IngredientRecipeInline,)
     list_filter = ('user',)
     empty_value_display = '-пусто-'
 
