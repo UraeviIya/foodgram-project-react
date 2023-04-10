@@ -131,6 +131,10 @@ class ShoppingCart(models.Model):
         to=User,
         on_delete=models.CASCADE,
     )
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+    )
     date_added = models.DateTimeField(
         verbose_name='Дата добавления',
         auto_now_add=True,
