@@ -58,9 +58,11 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'measurement_unit',
+        'id',
     )
     search_fields = (
         'name',
+        'id',
     )
     list_filter = ('name', )
     empty_value_display = '-пусто-'
