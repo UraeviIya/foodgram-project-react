@@ -15,12 +15,12 @@ def validate_ingredients(ingredients_list, val_model):
         if not val_model.objects.filter(pk=ingredient_id).exists():
             raise ValidationError(
                 f'{ingredient_id}- ингредиент с таким id не найден')
-        if id in unique_list:
-            raise ValidationError(
-                f'{ingredient_id}- дублирующийся ингредиент')
-        unique_list.append(ingredient_id)
-        ingredient_amount = ingredient.get('amount')
-        if int(ingredient_amount) < 1:
+        for ingredient in unique_list:
+            if ingredient['id'] in ingredients_list:
+                raise ValidationError(
+                    'Ингридиенты должны быть уникальны')
+            ingredients_list.append(ingredient['id'])
+        if int(ingredient) < 1:
             raise ValidationError(
                 f'Количество {ingredient} должно быть больше 1')
 
