@@ -1,6 +1,6 @@
 [![foodgram-project-react workflow](https://github.com/UraeviIya/foodgram-project-react/actions/workflows/main.yml/badge.svg)](https://github.com/UraeviIya/foodgram-project-react/actions/workflows/main.yml)
 
-### Описание проекта: foodgram_project_react
+## Описание проекта: foodgram_project_react
 
 Проект foodgram_project_react предсталяет собой пользовательский сервис. Пользователи могут поделиться
 своими рецептами и мастерством приготавления **Вкуснейших блюд**, так же можно подписаться на автора рецепта, добавлять рецепты в «Избранное», скачать список нужных продуктов для приготовления. 
@@ -14,7 +14,7 @@ http://158.160.25.20/admin/
 Логин администратора: admin@admin.com
 Пороль: qwerty_1
 
-### Запуск проекта через Docker:
+## Запуск проекта через Docker:
 
 Устанавливаем Docker, используя инструкции с официального сайта:
 - для [Linux](https://docs.docker.com/engine/install/ubuntu/). Отдельно потребуется установть [Docker Compose](https://docs.docker.com/compose/install/)
@@ -36,22 +36,22 @@ DB_PORT=5432
 SECRET_KEY='SECRET_KEY'
 ```
 
-- # Там же, в директории infra запустим сборку контейнеров коммандой
+- ### Там же, в директории infra запустим сборку контейнеров коммандой
 ```
 docker compose up -d --build
 ```
 
-- # Выполняем миграции
+- ### Выполняем миграции
 ```
 docker compose exec backend python manage.py migrate
 ```
 
-- # Собираем статику
+- ### Собираем статику
 ```
 docker compose exec backend python manage.py collectstatic --no-input
 ```
 
-- # Импортируем ингредиенты
+- ### Импортируем ингредиенты
 ```
 docker-compose exec backend python manage.py import_ingredients
 ```
