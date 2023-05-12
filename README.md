@@ -8,7 +8,7 @@
 Проект был подготовлен на основе **Redoc** API документации. 
 Подробнее про **Redoc** – https://redocly.com/redoc/
 
-##На данный момент сайт находится в открытом доступе по адресам:
+На данный момент сайт находится в открытом доступе по адресам:
 http://pss.hopto.org
 http://158.160.25.20/admin/
 Логин администратора: admin@admin.com
@@ -36,22 +36,22 @@ DB_PORT=5432
 SECRET_KEY='SECRET_KEY'
 ```
 
-- #Там же, в директории infra запустим сборку контейнеров коммандой
+- # Там же, в директории infra запустим сборку контейнеров коммандой
 ```
 docker compose up -d --build
 ```
 
-- #Выполняем миграции
+- # Выполняем миграции
 ```
 docker compose exec backend python manage.py migrate
 ```
 
-- #Собираем статику
+- # Собираем статику
 ```
 docker compose exec backend python manage.py collectstatic --no-input
 ```
 
-- #Импортируем ингредиенты
+- # Импортируем ингредиенты
 ```
 docker-compose exec backend python manage.py import_ingredients
 ```
